@@ -193,7 +193,8 @@
         font-family: ${FONT};
         outline: none;
         background: ${COLORS.white};
-        color: #000000;
+        color: #1F2937;
+        caret-color: #7C3AED;
         transition: border-color 0.2s, box-shadow 0.2s;
       " placeholder="Type your message..." />
       <button id="chat-send" style="
@@ -219,7 +220,7 @@
   // ─── FOCUS STYLES FOR INPUT ───
   const chatInput = box.querySelector("#chat-input");
   chatInput.addEventListener("focus", () => {
-    chatInput.style.borderColor = COLORS.primary;
+    chatInput.style.borderColor = "#7C3AED";
     chatInput.style.boxShadow = `0 0 0 3px ${COLORS.primaryLight}`;
   });
   chatInput.addEventListener("blur", () => {
@@ -408,12 +409,12 @@
       40% { transform: scale(1); opacity: 1; }
     }
     #chat-input::placeholder {
-      color: #94a3b8;
+      color: #9CA3AF;
       opacity: 1;
     }
-    #chat-input::-webkit-input-placeholder { color: #94a3b8; }
-    #chat-input::-moz-placeholder { color: #94a3b8; opacity: 1; }
-    #chat-input:-ms-input-placeholder { color: #94a3b8; }
+    #chat-input::-webkit-input-placeholder { color: #9CA3AF; }
+    #chat-input::-moz-placeholder { color: #9CA3AF; opacity: 1; }
+    #chat-input:-ms-input-placeholder { color: #9CA3AF; }
     #chat-messages::-webkit-scrollbar { width: 5px; }
     #chat-messages::-webkit-scrollbar-track { background: transparent; }
     #chat-messages::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
