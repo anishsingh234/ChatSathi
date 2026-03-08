@@ -12,7 +12,8 @@ export async function getSession(){
         const user=await scalekit.user.getUser(result.sub)
         return user
     }catch(error){
-        console.log(error)
+        // Token expired or invalid
+        return null
     }
     
 }
