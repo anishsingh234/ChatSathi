@@ -25,8 +25,3 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ message: "Error saving settings", error: message }, { status: 500 });
   }
 }
-
-
-export async function GET(req: NextRequest) {
-    
-}
