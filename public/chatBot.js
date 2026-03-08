@@ -1,4 +1,3 @@
-import { MessageCircle } from "lucide-react";
 (function () {
 
   const api_Url = "https://chat-sathi.vercel.app/api/chat";
@@ -177,7 +176,7 @@ addMessage(data || "something went wrong", "ai")
 } catch (error) {
     console.log("error", error)
     messageArea.removeChild(typing)
-addMessage(data || "something went wrong", "ai")
+addMessage("something went wrong", "ai")
 }
 }
 
