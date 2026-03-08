@@ -1,22 +1,22 @@
 import { connect } from "mongoose"
 
-const mongo_Url=process.env.MONGODB_URL
-if(!mongo_Url){
-    console.log("MongoDB URL not found in environment variables")
-}
-
 let cache=global.mongoose
 if(!cache){
     cache=global.mongoose={conn:null,promise:null}
 }
 
 const connectDb=async()=>{
+    const mongo_Url=process.env.MONGODB_URL
+    if(!mongo_Url){
+        throw new Error("MONGODB_URL not found in environment variables")
+    }
+
     if(cache.conn){
         return cache.conn
     }
 
     if(!cache.promise){
-        cache.promise=connect(mongo_Url!).then((c)=>c.connection)
+        cache.promise=connect(mongo_Url).then((c)=>c.connection)
     }    
     try{
         cache.conn=await cache.promise
