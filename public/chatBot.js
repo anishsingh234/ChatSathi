@@ -406,6 +406,13 @@
       0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
       40% { transform: scale(1); opacity: 1; }
     }
+    #chat-input::placeholder {
+      color: #94a3b8;
+      opacity: 1;
+    }
+    #chat-input::-webkit-input-placeholder { color: #94a3b8; }
+    #chat-input::-moz-placeholder { color: #94a3b8; opacity: 1; }
+    #chat-input:-ms-input-placeholder { color: #94a3b8; }
     #chat-messages::-webkit-scrollbar { width: 5px; }
     #chat-messages::-webkit-scrollbar-track { background: transparent; }
     #chat-messages::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
