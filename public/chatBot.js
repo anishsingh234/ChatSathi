@@ -189,10 +189,11 @@
         border: 1.5px solid ${COLORS.border};
         border-radius: 12px;
         font-size: 14px;
+        font-weight: 500;
         font-family: ${FONT};
         outline: none;
-        background: ${COLORS.bg};
-        color: ${COLORS.text};
+        background: ${COLORS.white};
+        color: #000000;
         transition: border-color 0.2s, box-shadow 0.2s;
       " placeholder="Type your message..." />
       <button id="chat-send" style="
