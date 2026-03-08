@@ -193,7 +193,7 @@
         font-family: ${FONT};
         outline: none;
         background: ${COLORS.white};
-        color: #1F2937;
+        color: #000000;
         caret-color: #7C3AED;
         transition: border-color 0.2s, box-shadow 0.2s;
       " placeholder="Type your message..." />
