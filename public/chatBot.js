@@ -193,7 +193,9 @@
         font-family: ${FONT};
         outline: none;
         background: ${COLORS.white};
-        color: #000000;
+        color: #111827;
+        -webkit-text-fill-color: #111827;
+        opacity: 1;
         caret-color: #7C3AED;
         transition: border-color 0.2s, box-shadow 0.2s;
       " placeholder="Type your message..." />
@@ -407,6 +409,12 @@
     @keyframes csDot {
       0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
       40% { transform: scale(1); opacity: 1; }
+    }
+    #chat-input {
+      color: #111827 !important;
+      -webkit-text-fill-color: #111827 !important;
+      opacity: 1 !important;
+      font-weight: 600;
     }
     #chat-input::placeholder {
       color: #9CA3AF;
