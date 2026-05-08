@@ -71,7 +71,7 @@ export async function POST(req: NextRequest) {
     const keywords = message.toLowerCase().split(/\s+/).filter((w: string) => w.length > 3);
     
     // Find relevant docs (if any keyword matches title, content, or tags)
-    const relevantDocs = allDocs.filter((doc) => {
+    const relevantDocs = allDocs.filter((doc: { title: string; content: string; tags: string[] }) => {
       const textToSearch = `${doc.title} ${doc.content} ${doc.tags.join(" ")}`.toLowerCase();
       return keywords.some((kw: string) => textToSearch.includes(kw));
     });
