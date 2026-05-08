@@ -56,7 +56,7 @@ export async function POST(req: NextRequest) {
 
       if (recentMessages.length > 0) {
         historyText = recentMessages
-          .map((m) => `${m.role === "user" ? "Customer" : "Assistant"}: ${m.content}`)
+          .map((m: { role: string; content: string }) => `${m.role === "user" ? "Customer" : "Assistant"}: ${m.content}`)
           .join("\n");
       }
     }
