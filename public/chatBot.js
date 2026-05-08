@@ -1,13 +1,60 @@
 (function () {
-  const api_Url = "https://chat-sathi.vercel.app/api/chat";
-
   const scriptTag = document.currentScript;
   const ownerId = scriptTag.getAttribute("data-owner-id");
+  const scriptSrc = scriptTag.getAttribute("src") || "";
+  const baseUrl = scriptSrc.replace(/\/chatBot\.js.*$/, "");
+  const api_Url = baseUrl + "/api/chat";
 
   if (!ownerId) {
     console.log("owner is not found");
     return;
   }
+
+  // ─── THEME CONFIG (fetched from server) ───
+  const configUrl = baseUrl + "/api/widget-config?ownerId=" + ownerId;
+  let themeConfig = {
+    primaryColor: "#7c3aed",
+    headerBg: "#0f0e17",
+    botBubbleBg: "rgba(255,255,255,0.05)",
+    userBubbleGrad1: "#635bff",
+    userBubbleGrad2: "#8b5cf6",
+    chatBg: "#0f0e17",
+    welcomeMessage: "Hey! 👋 How can I help you today?",
+    chatTitle: "ChatSathi",
+  };
+
+  // Fetch theme and then initialize widget
+  fetch(configUrl)
+    .then(function (r) { return r.json(); })
+    .then(function (cfg) {
+      if (cfg && cfg.primaryColor) themeConfig = cfg;
+    })
+    .catch(function () { /* use defaults */ })
+    .finally(function () { initWidget(); });
+
+  function initWidget() {
+  // ─── APPLY THEME as CSS custom properties ───
+  function applyTheme() {
+    var root = document.documentElement;
+    root.style.setProperty('--cs-primary', themeConfig.primaryColor);
+    root.style.setProperty('--cs-header-bg', themeConfig.headerBg);
+    root.style.setProperty('--cs-bot-bubble-bg', themeConfig.botBubbleBg);
+    root.style.setProperty('--cs-user-grad1', themeConfig.userBubbleGrad1);
+    root.style.setProperty('--cs-user-grad2', themeConfig.userBubbleGrad2);
+    root.style.setProperty('--cs-chat-bg', themeConfig.chatBg);
+  }
+  applyTheme();
+
+  // ─── VISITOR ID (persistent) ───
+  function getVisitorId() {
+    let vid = localStorage.getItem("cs_visitor_id");
+    if (!vid) {
+      vid = "v_" + Math.random().toString(36).substr(2, 9) + Date.now().toString(36);
+      localStorage.setItem("cs_visitor_id", vid);
+    }
+    return vid;
+  }
+  const visitorId = getVisitorId();
 
   // ─── GOOGLE FONTS ───
   const fontLink = document.createElement("link");
@@ -18,6 +65,14 @@
   // ─── GLOBAL STYLES ───
   const style = document.createElement("style");
   style.textContent = `
+    :root {
+      --cs-primary: #7c3aed;
+      --cs-header-bg: #0f0e17;
+      --cs-bot-bubble-bg: rgba(255,255,255,0.05);
+      --cs-user-grad1: #635bff;
+      --cs-user-grad2: #8b5cf6;
+      --cs-chat-bg: #0f0e17;
+    }
     .cs-widget * { box-sizing: border-box; margin: 0; padding: 0; }
 
     @keyframes cs-dot {
@@ -33,8 +88,8 @@
       to   { opacity: 1; transform: scale(1) rotate(0deg); }
     }
     @keyframes cs-pulse {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(99,91,255,0.5); }
-      50%       { box-shadow: 0 0 0 8px rgba(99,91,255,0); }
+      0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--cs-primary) 50%, transparent); }
+      50%       { box-shadow: 0 0 0 8px color-mix(in srgb, var(--cs-primary) 0%, transparent); }
     }
 
     .cs-fab {
@@ -44,7 +99,7 @@
       width: 58px;
       height: 58px;
       border-radius: 18px;
-      background: #0f0e17;
+      background: var(--cs-chat-bg);
       border: 1.5px solid rgba(255,255,255,0.12);
       color: #fff;
       display: flex;
@@ -70,7 +125,7 @@
       right: 28px;
       width: 388px;
       height: 540px;
-      background: #0f0e17;
+      background: var(--cs-chat-bg);
       border-radius: 24px;
       border: 1px solid rgba(255,255,255,0.1);
       box-shadow: 0 40px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.04) inset;
@@ -88,15 +143,15 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      background: linear-gradient(160deg, rgba(99,91,255,0.15) 0%, transparent 70%);
+      background: linear-gradient(160deg, color-mix(in srgb, var(--cs-primary) 15%, transparent) 0%, transparent 70%);
       flex-shrink: 0;
     }
     .cs-avatar {
       width: 38px;
       height: 38px;
       border-radius: 12px;
-      background: rgba(99,91,255,0.2);
-      border: 1px solid rgba(99,91,255,0.4);
+      background: color-mix(in srgb, var(--cs-primary) 20%, transparent);
+      border: 1px solid color-mix(in srgb, var(--cs-primary) 40%, transparent);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -163,13 +218,13 @@
       word-break: break-word;
     }
     .cs-bubble.ai {
-      background: rgba(255,255,255,0.05);
+      background: var(--cs-bot-bubble-bg);
       border: 1px solid rgba(255,255,255,0.08);
       color: rgba(255,255,255,0.85);
       border-bottom-left-radius: 4px;
     }
     .cs-bubble.user {
-      background: linear-gradient(135deg, #635bff 0%, #8b5cf6 100%);
+      background: linear-gradient(135deg, var(--cs-user-grad1) 0%, var(--cs-user-grad2) 100%);
       color: #fff;
       border-bottom-right-radius: 4px;
       font-weight: 400;
@@ -210,18 +265,18 @@
       font-family: 'DM Sans', sans-serif;
       color: #f0eeff;
       outline: none;
-      caret-color: #635bff;
+      caret-color: var(--cs-primary);
       transition: border-color 0.2s, background 0.2s;
       -webkit-text-fill-color: #f0eeff;
     }
     .cs-input::placeholder { color: rgba(255,255,255,0.25); }
-    .cs-input:focus { border-color: rgba(99,91,255,0.6); background: rgba(99,91,255,0.07); }
+    .cs-input:focus { border-color: color-mix(in srgb, var(--cs-primary) 60%, transparent); background: color-mix(in srgb, var(--cs-primary) 7%, transparent); }
 
     .cs-send {
       width: 40px;
       height: 40px;
       border-radius: 12px;
-      background: #635bff;
+      background: var(--cs-primary);
       border: none;
       color: #fff;
       display: flex;
@@ -231,7 +286,7 @@
       flex-shrink: 0;
       transition: background 0.2s, transform 0.15s;
     }
-    .cs-send:hover { background: #7a73ff; transform: scale(1.05); }
+    .cs-send:hover { background: color-mix(in srgb, var(--cs-primary) 85%, white); transform: scale(1.05); }
     .cs-send:active { transform: scale(0.96); }
 
     .cs-timestamp {
@@ -454,7 +509,7 @@
         ${iconBot()}
       </div>
       <div>
-        <div class="cs-name">ChatSathi</div>
+        <div class="cs-name">${themeConfig.chatTitle}</div>
         <div class="cs-status"><span class="cs-dot-live"></span>online · ready</div>
       </div>
       <div class="cs-close" id="cs-close" aria-label="Close chat">
@@ -467,7 +522,7 @@
       <div class="cs-timestamp">${timeStr}</div>
       <div class="cs-msg-row ai">
         <div class="cs-msg-avatar">${iconBot(12)}</div>
-        <div class="cs-bubble ai">Hey! 👋 How can I help you today?</div>
+        <div class="cs-bubble ai">${themeConfig.welcomeMessage}</div>
       </div>
     </div>
     <div class="cs-footer">
@@ -549,17 +604,42 @@
     const row = document.createElement("div");
     row.className = `cs-msg-row ${from}`;
 
-    if (from === "ai") {
+    if (from === "ai" || from === "admin") {
       const av = document.createElement("div");
       av.className = "cs-msg-avatar";
-      av.innerHTML = iconBot(12);
+      if (from === "admin") {
+        av.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>`;
+        av.style.background = "#d1fae5";
+        av.style.borderColor = "#a7f3d0";
+      } else {
+        av.innerHTML = iconBot(12);
+      }
       row.appendChild(av);
     }
 
+    const bubbleWrapper = document.createElement("div");
+    
+    if (from === "admin") {
+      const badge = document.createElement("div");
+      badge.style.fontSize = "10px";
+      badge.style.color = "#10b981";
+      badge.style.fontWeight = "600";
+      badge.style.marginBottom = "4px";
+      badge.innerHTML = "Admin Reply";
+      bubbleWrapper.appendChild(badge);
+    }
+
     const bubble = document.createElement("div");
-    bubble.className = `cs-bubble ${from}`;
+    bubble.className = \`cs-bubble \${from === "admin" ? "ai" : from}\`;
+    if (from === "admin") {
+      bubble.style.background = "#ecfdf5";
+      bubble.style.borderColor = "#d1fae5";
+      bubble.style.color = "#064e3b";
+    }
     bubble.innerHTML = text;
-    row.appendChild(bubble);
+    bubbleWrapper.appendChild(bubble);
+
+    row.appendChild(bubbleWrapper);
 
     msgArea.appendChild(row);
     msgArea.scrollTop = msgArea.scrollHeight;
@@ -598,6 +678,35 @@
     if (typingEl) { typingEl.remove(); typingEl = null; }
   }
 
+  let activeConversationId = null;
+  let lastMessageAt = new Date().toISOString();
+  let pollInterval = null;
+
+  function startPolling() {
+    if (pollInterval || !activeConversationId) return;
+    pollInterval = setInterval(async () => {
+      if (!isOpen) return; // Only poll when box is open
+      try {
+        const res = await fetch(\`\${baseUrl}/api/conversations/\${activeConversationId}/messages?after=\${lastMessageAt}\`);
+        if (!res.ok) return;
+        const messages = await res.json();
+        
+        if (messages.length > 0) {
+          messages.forEach(m => {
+            // Only show admin messages (user messages are already in UI, bot messages come from main response)
+            if (m.role === "admin") {
+              addTimestamp();
+              addMessage(m.content, "admin");
+            }
+          });
+          lastMessageAt = messages[messages.length - 1].createdAt;
+        }
+      } catch (err) {
+        console.error("Polling error", err);
+      }
+    }, 5000); // Poll every 5s
+  }
+
   // ─── SEND HANDLER ───
   async function send() {
     const text = input.value.trim();
@@ -616,11 +725,20 @@
       const res = await fetch(api_Url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ownerId, message: text }),
+        body: JSON.stringify({ ownerId, message: text, visitorId }),
       });
       const data = await res.json();
       removeTyping();
-      addMessage(data || "Something went wrong. Please try again.", "ai");
+      
+      const responseText = data.text || data || "Something went wrong. Please try again.";
+      addMessage(responseText, "ai");
+      lastMessageAt = new Date().toISOString();
+
+      if (data.conversationId) {
+        activeConversationId = data.conversationId;
+        startPolling();
+      }
+
     } catch (err) {
       removeTyping();
       addMessage("Couldn't reach the server. Check your connection.", "ai");
@@ -636,4 +754,5 @@
   input.addEventListener("keydown", (e) => {
     if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(); }
   });
+  } // end initWidget
 })();

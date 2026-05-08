@@ -1,5 +1,4 @@
-import connectDb from "@/lib/db";
-import Settings from "@/model/settings.model";
+import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
@@ -11,10 +10,16 @@ export async function POST(req: NextRequest) {
         { status: 400 },
       );
     }
-    await connectDb();
-    const settings = await Settings.findOne({ ownerId });
-    return NextResponse.json(settings, { status: 200 });
+
+    const settings = await prisma.settings.findUnique({
+      where: { userId: ownerId },
+    });
+
+    return NextResponse.json(settings || {}, { status: 200 });
   } catch (error) {
-    return NextResponse.json({ message: "Error fetching settings", error }, { status: 500 });
+    return NextResponse.json(
+      { message: "Error fetching settings", error },
+      { status: 500 },
+    );
   }
 }

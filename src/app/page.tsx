@@ -1,15 +1,13 @@
-import Image from "next/image";
 import HomeClient from "@/components/HomeClient";
-import { getSession } from "@/lib/getSession";
+import { getSession } from "@/lib/auth";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const session=await getSession()
-  console.log("session",session)
+  const user = await getSession();
   return (
-   <div>
-    <HomeClient email={session?.user?.email!} />
-   </div>
+    <div>
+      <HomeClient user={user} />
+    </div>
   );
 }
