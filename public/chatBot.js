@@ -76,348 +76,145 @@
       --cs-user-grad1: #635bff;
       --cs-user-grad2: #8b5cf6;
       --cs-chat-bg: #0f0e17;
+      --cs-text-main: #fcfcfc;
+      --cs-text-muted: rgba(255,255,255,0.6);
+      --cs-border: rgba(255,255,255,0.08);
+      --cs-shadow: 0 12px 40px rgba(0,0,0,0.25);
     }
-    .cs-widget * { box-sizing: border-box; margin: 0; padding: 0; }
+    .cs-widget * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif; }
 
-    @keyframes cs-dot {
-      0%, 60%, 100% { transform: translateY(0); opacity: 0.3; }
-      30% { transform: translateY(-5px); opacity: 1; }
-    }
-    @keyframes cs-in {
-      from { opacity: 0; transform: translateY(8px) scale(0.97); }
-      to   { opacity: 1; transform: translateY(0) scale(1); }
-    }
-    @keyframes cs-fab-in {
-      from { opacity: 0; transform: scale(0.8) rotate(-15deg); }
-      to   { opacity: 1; transform: scale(1) rotate(0deg); }
-    }
-    @keyframes cs-pulse {
-      0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--cs-primary) 50%, transparent); }
-      50%       { box-shadow: 0 0 0 8px color-mix(in srgb, var(--cs-primary) 0%, transparent); }
-    }
+    @keyframes cs-in { from { opacity: 0; transform: translateY(10px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+    @keyframes cs-fab-in { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+    @keyframes cs-dot { 0%, 100% { transform: scale(0.8); opacity: 0.4; } 50% { transform: scale(1.2); opacity: 1; } }
 
     .cs-fab {
-      position: fixed;
-      bottom: 28px;
-      right: 28px;
-      width: 58px;
-      height: 58px;
-      border-radius: 18px;
-      background: var(--cs-chat-bg);
-      border: 1.5px solid rgba(255,255,255,0.12);
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      z-index: 999999;
-      animation: cs-fab-in 0.5s cubic-bezier(0.34,1.56,0.64,1) both, cs-pulse 2.5s 1s ease-in-out infinite;
-      transition: border-color 0.2s, background 0.2s;
-      font-family: 'DM Sans', sans-serif;
+      position: fixed; bottom: 24px; right: 24px; width: 56px; height: 56px;
+      border-radius: 28px; background: var(--cs-primary);
+      box-shadow: 0 8px 24px color-mix(in srgb, var(--cs-primary) 40%, transparent);
+      color: #fff; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; z-index: 999999; animation: cs-fab-in 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: transform 0.2s, box-shadow 0.2s;
     }
-    .cs-fab:hover {
-      background: #1c1a2e;
-      border-color: rgba(255,255,255,0.22);
-      animation: none;
-    }
-    .cs-fab svg { transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1); }
-    .cs-fab:hover svg { transform: scale(1.1); }
+    .cs-fab:hover { transform: scale(1.05); }
+    .cs-fab svg { transition: transform 0.3s; }
 
     .cs-box {
-      position: fixed;
-      bottom: 100px;
-      right: 28px;
-      width: 388px;
-      height: 540px;
-      background: var(--cs-chat-bg);
-      border-radius: 24px;
-      border: 1px solid rgba(255,255,255,0.1);
-      box-shadow: 0 40px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.04) inset;
-      display: none;
-      flex-direction: column;
-      overflow: hidden;
-      z-index: 999999;
-      font-family: 'DM Sans', sans-serif;
+      position: fixed; bottom: 96px; right: 24px; width: 380px; height: 600px; max-height: calc(100vh - 120px);
+      background: var(--cs-chat-bg); border-radius: 20px;
+      border: 1px solid var(--cs-border); box-shadow: var(--cs-shadow);
+      display: none; flex-direction: column; overflow: hidden; z-index: 999999;
       transform-origin: bottom right;
     }
 
     .cs-header {
-      padding: 18px 20px 14px;
-      border-bottom: 1px solid rgba(255,255,255,0.07);
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      background: linear-gradient(160deg, color-mix(in srgb, var(--cs-primary) 15%, transparent) 0%, transparent 70%);
-      flex-shrink: 0;
+      padding: 20px 24px; border-bottom: 1px solid var(--cs-border);
+      display: flex; align-items: center; gap: 14px; background: var(--cs-header-bg); flex-shrink: 0;
     }
     .cs-avatar {
-      width: 38px;
-      height: 38px;
-      border-radius: 12px;
-      background: color-mix(in srgb, var(--cs-primary) 20%, transparent);
-      border: 1px solid color-mix(in srgb, var(--cs-primary) 40%, transparent);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
+      width: 40px; height: 40px; border-radius: 20px;
+      background: color-mix(in srgb, var(--cs-primary) 15%, transparent);
+      display: flex; align-items: center; justify-content: center; color: var(--cs-primary); flex-shrink: 0;
     }
-    .cs-name { font-size: 14px; font-weight: 500; color: #f0eeff; letter-spacing: -0.01em; }
-    .cs-status { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 2px; display: flex; align-items: center; gap: 5px; font-family: 'DM Mono', monospace; letter-spacing: 0.02em; }
-    .cs-dot-live { width: 6px; height: 6px; border-radius: 50%; background: #4ade80; box-shadow: 0 0 6px rgba(74,222,128,0.6); }
+    .cs-name { font-size: 15px; font-weight: 600; color: var(--cs-text-main); letter-spacing: -0.01em; }
+    .cs-status { font-size: 12px; color: var(--cs-text-muted); margin-top: 2px; display: flex; align-items: center; gap: 6px; }
+    .cs-dot-live { width: 6px; height: 6px; border-radius: 50%; background: #22c55e; }
     .cs-close {
-      margin-left: auto;
-      width: 30px;
-      height: 30px;
-      border-radius: 8px;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.08);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      color: rgba(255,255,255,0.5);
-      transition: background 0.2s, color 0.2s;
-      flex-shrink: 0;
+      margin-left: auto; width: 32px; height: 32px; border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: var(--cs-text-muted); transition: background 0.2s, color 0.2s; flex-shrink: 0;
     }
-    .cs-close:hover { background: rgba(255,255,255,0.12); color: #fff; }
+    .cs-close:hover { background: rgba(255,255,255,0.08); color: var(--cs-text-main); }
 
     .cs-messages {
-      flex: 1;
-      overflow-y: auto;
-      padding: 20px 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
+      flex: 1; overflow-y: auto; padding: 24px; display: flex; flex-direction: column; gap: 16px; scroll-behavior: smooth;
     }
     .cs-messages::-webkit-scrollbar { width: 4px; }
-    .cs-messages::-webkit-scrollbar-track { background: transparent; }
-    .cs-messages::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+    .cs-messages::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 4px; }
 
-    .cs-msg-row {
-      display: flex;
-      gap: 8px;
-      align-items: flex-end;
-      animation: cs-in 0.28s ease both;
-    }
+    .cs-msg-row { display: flex; gap: 10px; align-items: flex-end; animation: cs-in 0.3s cubic-bezier(0.16, 1, 0.3, 1) both; }
     .cs-msg-row.user { flex-direction: row-reverse; }
+    .cs-msg-row > div:not(.cs-msg-avatar) { max-width: 82%; display: flex; flex-direction: column; }
+    .cs-msg-row.user > div:not(.cs-msg-avatar) { align-items: flex-end; }
+    .cs-msg-row.ai > div:not(.cs-msg-avatar), .cs-msg-row.admin > div:not(.cs-msg-avatar) { align-items: flex-start; }
 
     .cs-msg-avatar {
-      width: 26px;
-      height: 26px;
-      border-radius: 8px;
-      background: rgba(99,91,255,0.25);
-      border: 1px solid rgba(99,91,255,0.3);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
+      width: 28px; height: 28px; border-radius: 14px;
+      background: color-mix(in srgb, var(--cs-primary) 15%, transparent); color: var(--cs-primary);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
     }
 
     .cs-bubble {
-      max-width: 76%;
-      padding: 10px 14px;
-      font-size: 13.5px;
-      line-height: 1.55;
-      border-radius: 16px;
-      word-break: break-word;
+      padding: 12px 16px; font-size: 14px; line-height: 1.5; border-radius: 18px; 
+      overflow-wrap: anywhere; word-break: normal; white-space: pre-wrap;
     }
     .cs-bubble.ai {
-      background: var(--cs-bot-bubble-bg);
-      border: 1px solid rgba(255,255,255,0.08);
-      color: rgba(255,255,255,0.85);
-      border-bottom-left-radius: 4px;
+      background: var(--cs-bot-bubble-bg); color: var(--cs-text-main); border-bottom-left-radius: 4px;
     }
     .cs-bubble.user {
-      background: linear-gradient(135deg, var(--cs-user-grad1) 0%, var(--cs-user-grad2) 100%);
-      color: #fff;
-      border-bottom-right-radius: 4px;
-      font-weight: 400;
+      background: linear-gradient(135deg, var(--cs-user-grad1), var(--cs-user-grad2)); color: #fff; border-bottom-right-radius: 4px;
     }
 
-    .cs-typing-dots {
-      display: flex;
-      gap: 4px;
-      align-items: center;
-      padding: 4px 0;
-    }
-    .cs-typing-dots span {
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.35);
-      display: inline-block;
-      animation: cs-dot 1.2s ease infinite;
-    }
-    .cs-typing-dots span:nth-child(2) { animation-delay: 0.15s; }
-    .cs-typing-dots span:nth-child(3) { animation-delay: 0.3s; }
+    .cs-typing-dots { display: flex; gap: 4px; padding: 4px 2px; }
+    .cs-typing-dots span { width: 6px; height: 6px; border-radius: 50%; background: var(--cs-text-muted); animation: cs-dot 1.4s infinite; }
+    .cs-typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+    .cs-typing-dots span:nth-child(3) { animation-delay: 0.4s; }
 
     .cs-footer {
-      padding: 12px 16px 16px;
-      border-top: 1px solid rgba(255,255,255,0.07);
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      flex-shrink: 0;
+      padding: 16px 24px 24px; display: flex; gap: 10px; align-items: center; flex-shrink: 0; background: var(--cs-chat-bg);
     }
     .cs-input {
-      flex: 1;
-      padding: 10px 14px;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 12px;
-      font-size: 13.5px;
-      font-family: 'DM Sans', sans-serif;
-      color: #f0eeff;
-      outline: none;
-      caret-color: var(--cs-primary);
-      transition: border-color 0.2s, background 0.2s;
-      -webkit-text-fill-color: #f0eeff;
+      flex: 1; padding: 14px 16px; background: rgba(255,255,255,0.05); border: 1px solid var(--cs-border);
+      border-radius: 14px; font-size: 14px; color: var(--cs-text-main); outline: none; transition: border-color 0.2s, background 0.2s;
     }
-    .cs-input::placeholder { color: rgba(255,255,255,0.25); }
-    .cs-input:focus { border-color: color-mix(in srgb, var(--cs-primary) 60%, transparent); background: color-mix(in srgb, var(--cs-primary) 7%, transparent); }
+    .cs-input::placeholder { color: var(--cs-text-muted); }
+    .cs-input:focus { border-color: var(--cs-primary); background: rgba(255,255,255,0.08); }
 
     .cs-send {
-      width: 40px;
-      height: 40px;
-      border-radius: 12px;
-      background: var(--cs-primary);
-      border: none;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      flex-shrink: 0;
-      transition: background 0.2s, transform 0.15s;
+      width: 44px; height: 44px; border-radius: 14px; background: var(--cs-primary); border: none;
+      color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; transition: opacity 0.2s, transform 0.1s;
     }
-    .cs-send:hover { background: color-mix(in srgb, var(--cs-primary) 85%, white); transform: scale(1.05); }
-    .cs-send:active { transform: scale(0.96); }
+    .cs-send:hover { opacity: 0.9; }
+    .cs-send:active { transform: scale(0.95); }
 
-    .cs-timestamp {
-      font-size: 10px;
-      color: rgba(255,255,255,0.2);
-      font-family: 'DM Mono', monospace;
-      text-align: center;
-      letter-spacing: 0.04em;
-      margin: -4px 0 2px;
-    }
+    .cs-timestamp { font-size: 11px; color: var(--cs-text-muted); text-align: center; margin: 8px 0; font-weight: 500; }
 
-    @keyframes cs-popup-in {
-      0%   { opacity: 0; transform: translateY(10px) scale(0.95); }
-      60%  { opacity: 1; transform: translateY(-3px) scale(1.01); }
-      100% { opacity: 1; transform: translateY(0) scale(1); }
-    }
-    @keyframes cs-popup-out {
-      from { opacity: 1; transform: translateY(0) scale(1); }
-      to   { opacity: 0; transform: translateY(6px) scale(0.96); }
-    }
+    @keyframes cs-popup-in { from { opacity: 0; transform: translateY(16px) scale(0.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
+    @keyframes cs-popup-out { from { opacity: 1; transform: translateY(0) scale(1); } to { opacity: 0; transform: translateY(12px) scale(0.96); } }
 
     .cs-popup {
-      position: fixed;
-      bottom: 100px;
-      right: 28px;
-      z-index: 999998;
-      font-family: 'DM Sans', sans-serif;
-      animation: cs-popup-in 0.45s cubic-bezier(0.34,1.56,0.64,1) both;
-      cursor: pointer;
+      position: fixed; bottom: 96px; right: 24px; z-index: 999998; animation: cs-popup-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) both; cursor: pointer;
     }
-    .cs-popup.hiding {
-      animation: cs-popup-out 0.2s ease forwards;
-    }
+    .cs-popup.hiding { animation: cs-popup-out 0.25s ease forwards; }
     .cs-popup-card {
-      background: #0f0e17;
-      border: 1px solid rgba(255,255,255,0.12);
-      border-radius: 18px;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.04) inset;
-      padding: 14px 16px 12px;
-      width: 240px;
-      position: relative;
+      background: var(--cs-chat-bg); border: 1px solid var(--cs-border); border-radius: 20px;
+      box-shadow: var(--cs-shadow); padding: 20px; width: 280px; position: relative;
     }
-    .cs-popup-header {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 8px;
-    }
+    .cs-popup-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
     .cs-popup-avatar {
-      width: 28px; height: 28px;
-      border-radius: 8px;
-      background: rgba(99,91,255,0.2);
-      border: 1px solid rgba(99,91,255,0.35);
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
+      width: 36px; height: 36px; border-radius: 18px; background: color-mix(in srgb, var(--cs-primary) 15%, transparent);
+      display: flex; align-items: center; justify-content: center; color: var(--cs-primary); flex-shrink: 0;
     }
-    .cs-popup-brand { font-size: 12px; font-weight: 500; color: #f0eeff; letter-spacing: -0.01em; }
-    .cs-popup-badge {
-      font-size: 9px;
-      font-family: 'DM Mono', monospace;
-      letter-spacing: 0.06em;
-      color: rgba(255,255,255,0.35);
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.08);
-      padding: 2px 6px;
-      border-radius: 20px;
-      margin-left: auto;
-      white-space: nowrap;
-    }
-    .cs-popup-msg {
-      font-size: 13px;
-      line-height: 1.5;
-      color: rgba(255,255,255,0.75);
-      margin-bottom: 10px;
-    }
-    .cs-popup-msg strong { color: #f0eeff; font-weight: 500; }
-    .cs-popup-cta {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
+    .cs-popup-brand { font-size: 14px; font-weight: 600; color: var(--cs-text-main); }
+    
+    .cs-popup-msg { font-size: 14px; line-height: 1.5; color: var(--cs-text-muted); margin-bottom: 16px; }
+    .cs-popup-msg strong { color: var(--cs-text-main); font-weight: 600; }
+    
+    .cs-popup-cta { display: flex; gap: 8px; flex-wrap: wrap; }
     .cs-popup-chip {
-      font-size: 11.5px;
-      padding: 5px 10px;
-      border-radius: 20px;
-      background: rgba(99,91,255,0.15);
-      border: 1px solid rgba(99,91,255,0.3);
-      color: rgba(149,139,255,0.9);
-      cursor: pointer;
-      transition: background 0.18s, border-color 0.18s, color 0.18s;
-      white-space: nowrap;
-      font-family: 'DM Sans', sans-serif;
+      font-size: 13px; font-weight: 500; padding: 6px 14px; border-radius: 20px;
+      background: color-mix(in srgb, var(--cs-primary) 15%, transparent); color: color-mix(in srgb, var(--cs-primary) 100%, white);
+      transition: background 0.2s, color 0.2s; white-space: nowrap;
     }
-    .cs-popup-chip:hover {
-      background: rgba(99,91,255,0.28);
-      border-color: rgba(99,91,255,0.55);
-      color: #c4bfff;
-    }
+    .cs-popup-chip:hover { background: var(--cs-primary); color: #fff; }
+    
     .cs-popup-dismiss {
-      position: absolute;
-      top: 10px; right: 10px;
-      width: 20px; height: 20px;
-      border-radius: 6px;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.08);
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer;
-      color: rgba(255,255,255,0.3);
-      transition: background 0.15s, color 0.15s;
+      position: absolute; top: 16px; right: 16px; width: 24px; height: 24px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--cs-text-muted); transition: background 0.2s;
     }
-    .cs-popup-dismiss:hover { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.7); }
-    .cs-popup-tail {
-      position: absolute;
-      bottom: -7px;
-      right: 22px;
-      width: 14px; height: 8px;
-      overflow: visible;
-    }
+    .cs-popup-dismiss:hover { background: rgba(255,255,255,0.08); color: var(--cs-text-main); }
 
     @media (max-width: 480px) {
-      .cs-box {
-        width: 100vw !important;
-        height: 100dvh !important;
-        bottom: 0 !important;
-        right: 0 !important;
-        border-radius: 0 !important;
-      }
+      .cs-box { width: 100vw; height: 100dvh; max-height: 100dvh; bottom: 0; right: 0; border-radius: 0; border: none; }
       .cs-popup { right: 16px; bottom: 96px; }
     }
   `;
@@ -436,14 +233,13 @@
   popup.innerHTML = `
     <div class="cs-popup-card">
       <div class="cs-popup-dismiss" id="cs-popup-dismiss">
-        <svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M1 1L7 7M7 1L1 7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1 1L9 9M9 1L1 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
       </div>
       <div class="cs-popup-header">
         <div class="cs-popup-avatar">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="3" y="9" width="18" height="11" rx="3" stroke="rgba(99,91,255,0.8)" stroke-width="1.6"/><path d="M9 14V15.5M15 14V15.5" stroke="rgba(99,91,255,0.8)" stroke-width="1.6" stroke-linecap="round"/><path d="M9 6V9M15 6V9" stroke="rgba(99,91,255,0.8)" stroke-width="1.6" stroke-linecap="round"/></svg>
+          ${iconBot(18)}
         </div>
-        <div class="cs-popup-brand">ChatSathi</div>
-        <div class="cs-popup-badge">AI · powered</div>
+        <div class="cs-popup-brand">${themeConfig.chatTitle}</div>
       </div>
       <div class="cs-popup-msg">
         <strong>Hey there! 👋</strong><br>
@@ -452,12 +248,7 @@
       <div class="cs-popup-cta">
         <span class="cs-popup-chip" data-msg="What services do you offer?">Our services</span>
         <span class="cs-popup-chip" data-msg="How do I get started?">Get started</span>
-        <span class="cs-popup-chip" data-msg="I need support">Get support</span>
       </div>
-      <svg class="cs-popup-tail" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0 0 L7 8 L14 0" fill="#0f0e17"/>
-        <path d="M0 0.5 L7 8 L14 0.5" stroke="rgba(255,255,255,0.12)" stroke-width="1" fill="none"/>
-      </svg>
     </div>
   `;
   document.body.appendChild(popup);
@@ -510,30 +301,30 @@
   box.innerHTML = `
     <div class="cs-header">
       <div class="cs-avatar">
-        ${iconBot()}
+        ${iconBot(20)}
       </div>
       <div>
         <div class="cs-name">${themeConfig.chatTitle}</div>
-        <div class="cs-status"><span class="cs-dot-live"></span>online · ready</div>
+        <div class="cs-status"><span class="cs-dot-live"></span>We typically reply in minutes</div>
       </div>
       <div class="cs-close" id="cs-close" aria-label="Close chat">
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M1 1L11 11M11 1L1 11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M1 1L13 13M13 1L1 13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
         </svg>
       </div>
     </div>
     <div class="cs-messages" id="cs-messages">
       <div class="cs-timestamp">${timeStr}</div>
       <div class="cs-msg-row ai">
-        <div class="cs-msg-avatar">${iconBot(12)}</div>
+        <div class="cs-msg-avatar">${iconBot(14)}</div>
         <div class="cs-bubble ai">${themeConfig.welcomeMessage}</div>
       </div>
     </div>
     <div class="cs-footer">
-      <input class="cs-input" id="cs-input" type="text" placeholder="Ask me anything…" autocomplete="off" />
+      <input class="cs-input" id="cs-input" type="text" placeholder="Write a message..." autocomplete="off" />
       <button class="cs-send" id="cs-send" aria-label="Send message">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <path d="M22 2L11 13M22 2L15 22L11 13M22 2L2 9L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </button>
     </div>
@@ -554,12 +345,9 @@
     </svg>`;
   }
 
-  function iconBot(size = 16) {
-    return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect x="3" y="9" width="18" height="11" rx="3" stroke="rgba(99,91,255,0.8)" stroke-width="1.6"/>
-      <path d="M9 14V15.5M15 14V15.5" stroke="rgba(99,91,255,0.8)" stroke-width="1.6" stroke-linecap="round"/>
-      <path d="M9 6V9M15 6V9" stroke="rgba(99,91,255,0.8)" stroke-width="1.6" stroke-linecap="round"/>
-      <path d="M12 4C12 3.44772 12.4477 3 13 3H15C15.5523 3 16 3.44772 16 4V6H9V4C9 3.44772 9.44772 3 10 3H12Z" stroke="rgba(99,91,255,0.8)" stroke-width="1.6"/>
+  function iconBot(size = 18) {
+    return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
     </svg>`;
   }
 
@@ -734,7 +522,7 @@
       const data = await res.json();
       removeTyping();
       
-      const responseText = data.text || data || "Something went wrong. Please try again.";
+      const responseText = data.text || data.message || "Something went wrong. Please try again.";
       addMessage(responseText, "ai");
       lastMessageAt = new Date().toISOString();
 

@@ -183,7 +183,7 @@ RESPONSE
 }
 
 export const OPTIONS = async () => {
-  return NextResponse.json(null, {
+  return new NextResponse(null, {
     status: 204,
     headers: {
       "Access-Control-Allow-Origin": "*",
