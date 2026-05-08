@@ -64,7 +64,6 @@ export default function ConversationDetail({
 
   const getRoleBadge = (role: string) => {
     switch (role) {
-    switch (role) {
       case "user":
         return { icon: User, bg: "bg-slate-100", iconClass: "text-slate-600", bubbleBg: "bg-slate-100 text-slate-800 rounded-tr-sm border border-slate-200/60", label: "Visitor" };
       case "admin":
