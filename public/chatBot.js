@@ -1,5 +1,9 @@
 (function () {
-  const scriptTag = document.currentScript;
+  const scriptTag = document.currentScript || document.querySelector('script[src*="chatBot.js"]');
+  if (!scriptTag) {
+    console.error("ChatBot script tag not found");
+    return;
+  }
   const ownerId = scriptTag.getAttribute("data-owner-id");
   const scriptSrc = scriptTag.getAttribute("src") || "";
   const baseUrl = scriptSrc.replace(/\/chatBot\.js.*$/, "");
@@ -630,7 +634,7 @@
     }
 
     const bubble = document.createElement("div");
-    bubble.className = \`cs-bubble \${from === "admin" ? "ai" : from}\`;
+    bubble.className = `cs-bubble ${from === "admin" ? "ai" : from}`;
     if (from === "admin") {
       bubble.style.background = "#ecfdf5";
       bubble.style.borderColor = "#d1fae5";
@@ -687,7 +691,7 @@
     pollInterval = setInterval(async () => {
       if (!isOpen) return; // Only poll when box is open
       try {
-        const res = await fetch(\`\${baseUrl}/api/conversations/\${activeConversationId}/messages?after=\${lastMessageAt}\`);
+        const res = await fetch(`${baseUrl}/api/conversations/${activeConversationId}/messages?after=${lastMessageAt}`);
         if (!res.ok) return;
         const messages = await res.json();
         
