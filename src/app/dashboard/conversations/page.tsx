@@ -18,7 +18,7 @@ export default async function ConversationsPage() {
     orderBy: { updatedAt: "desc" },
   });
 
-  const formatted = conversations.map((c) => ({
+  const formatted = conversations.map((c: any) => ({
     id: c.id,
     visitorId: c.visitorId,
     messageCount: c._count.messages,
