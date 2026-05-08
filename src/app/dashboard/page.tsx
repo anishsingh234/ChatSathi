@@ -37,7 +37,7 @@ export default async function DashboardPage() {
     const d = new Date();
     d.setDate(d.getDate() - i);
     const dateStr = d.toISOString().split("T")[0];
-    const count = recentConversations.filter((c) => {
+    const count = recentConversations.filter((c: any) => {
       const cDate = new Date(c.createdAt).toISOString().split("T")[0];
       return cDate === dateStr;
     }).length;
@@ -59,7 +59,7 @@ export default async function DashboardPage() {
     },
   });
 
-  const activityItems = recentActivity.map((c) => ({
+  const activityItems = recentActivity.map((c: any) => ({
     id: c.id,
     visitorId: c.visitorId,
     messageCount: c._count.messages,
