@@ -28,7 +28,7 @@ export default async function ConversationDetailPage({
     id: conversation.id,
     visitorId: conversation.visitorId,
     createdAt: conversation.createdAt.toISOString(),
-    messages: conversation.messages.map((m) => ({
+    messages: conversation.messages.map((m: any) => ({
       id: m.id,
       content: m.content,
       role: m.role,
