@@ -79,7 +79,7 @@ export async function POST(req: NextRequest) {
     // If no specific match, use top 3 newest as fallback, or just what we matched
     const docsToInject = relevantDocs.length > 0 ? relevantDocs : allDocs.slice(0, 3);
     
-    const docsText = docsToInject.map(d => `--- ${d.title} ---\n${d.content}`).join("\n\n");
+    const docsText = docsToInject.map((d: { title: string; content: string }) => `--- ${d.title} ---\n${d.content}`).join("\n\n");
 
     // Build prompt
     const KNOWLEDGE = `
